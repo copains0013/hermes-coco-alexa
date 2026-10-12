@@ -1,0 +1,40 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "fr-FR": {
+          "name": "Hermès Coco",
+          "summary": "Interface vocale privée de Hermès.",
+          "description": "Posez des questions à Hermès et lancez des scénarios Home Assistant explicitement autorisés, après confirmation. Nécessite votre propre pont privé configuré. Non destiné à la publication grand public.",
+          "examplePhrases": [
+            "Alexa, ouvre hermès coco",
+            "ma question est quelle est la capitale du Japon",
+            "continue"
+          ],
+          "keywords": [
+            "assistant",
+            "maison",
+            "questions"
+          ]
+        }
+      },
+      "isAvailableWorldwide": false,
+      "distributionCountries": [
+        "FR",
+        "CH"
+      ],
+      "category": "SMART_HOME"
+    },
+    "apis": {
+      "custom": {}
+    },
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "usesPersonalInfo": true,
+      "isChildDirected": false,
+      "isExportCompliant": true,
+      "containsAds": false
+    },
+    "manifestVersion": "1.0"
+  }
+}

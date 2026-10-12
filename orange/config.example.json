@@ -1,0 +1,10 @@
+{
+  "port": 18764,
+  "timezone": "Europe/Zurich",
+  "bridge_token_file": "/opt/hermes-coco-alexa/private/bridge-token",
+  "ha_token_file": "/opt/hermes-coco-alexa/private/ha-token",
+  "allowed_user_ids": [
+    "amzn1.ask.account.REPLACE"
+  ],
+  "actions": {}
+}

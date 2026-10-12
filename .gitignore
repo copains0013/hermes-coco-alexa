@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.env.*
+private/
+private_config.json
+config.local.json
+*-token
+*.log
+.venv/

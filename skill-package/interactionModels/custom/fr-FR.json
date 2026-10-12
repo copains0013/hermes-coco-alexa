@@ -1,0 +1,72 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "hermès coco",
+      "intents": [
+        {
+          "name": "AskHermesIntent",
+          "slots": [
+            {
+              "name": "question",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "ma question est {question}",
+            "fais ceci {question}",
+            "dis moi {question}",
+            "explique {question}",
+            "je voudrais {question}"
+          ]
+        },
+        {
+          "name": "FollowUpIntent",
+          "slots": [
+            {
+              "name": "question",
+              "type": "AMAZON.SearchQuery"
+            }
+          ],
+          "samples": [
+            "ma réponse est {question}",
+            "je précise {question}"
+          ]
+        },
+        {
+          "name": "ContinueIntent",
+          "samples": [
+            "continue",
+            "tu as la réponse",
+            "donne moi la réponse",
+            "quel est le résultat"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": []
+    }
+  }
+}

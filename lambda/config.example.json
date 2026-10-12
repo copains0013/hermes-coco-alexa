@@ -1,0 +1,10 @@
+{
+  "bridge_url": "https://YOUR-PRIVATE-BRIDGE.example.com",
+  "bridge_token": "REPLACE_PRIVATELY",
+  "access_client_id": "REPLACE_PRIVATELY",
+  "access_client_secret": "REPLACE_PRIVATELY",
+  "skill_id": "amzn1.ask.skill.REPLACE",
+  "allowed_user_ids": [
+    "amzn1.ask.account.REPLACE"
+  ]
+}

@@ -1,0 +1,19 @@
+[Unit]
+Description=Private Hermes Coco Alexa bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Replace USER and paths after verifying the installed Hermes environment.
+User=REPLACE_USER
+WorkingDirectory=/opt/hermes-coco-alexa/orange
+ExecStart=/usr/bin/python3 /opt/hermes-coco-alexa/orange/server.py --config /opt/hermes-coco-alexa/private/config.local.json
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
