@@ -119,4 +119,7 @@ def lambda_handler(event, context):
         return speak('Cet accès à Hermès n’est pas autorisé pour ce compte.',end=True)
     except Exception:
         # Never speak/log raw exception text, URLs, tokens, Alexa IDs or transcripts.
-        return speak('La liaison privée avec Hermès n’est pas disponible. Rien n’est confirmé. Réessaie plus tard.',attrs)
+        if name=='AMAZON.YesIntent' and attrs.get('confirmation_job'):
+            attrs['pending_job']=attrs.pop('confirmation_job')
+            return speak('Le résultat de la confirmation est incertain. Dis continue pour vérifier son état, et vérifie Home Assistant avant de relancer l’action.',attrs)
+        return speak('La liaison privée avec Hermès n’est pas disponible. Réessaie plus tard.',attrs)

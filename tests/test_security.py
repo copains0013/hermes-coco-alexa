@@ -46,6 +46,13 @@ class SkillSecurityTests(unittest.TestCase):
         with patch.object(skill,'bridge_call',return_value={'status':'uncertain','speech':'Résultat incertain.','job_id':'job-test'}):
             result=skill.lambda_handler(envelope('IntentRequest','AMAZON.NoIntent',attrs={'confirmation_job':'job-test'}),None)
         self.assertIn('incertain',result['response']['outputSpeech']['ssml'])
+    def test_lost_confirmation_response_is_uncertain_and_recoverable(self):
+        with patch.object(skill,'bridge_call',side_effect=TimeoutError):
+            result=skill.lambda_handler(envelope('IntentRequest','AMAZON.YesIntent',attrs={'confirmation_job':'job-test'}),None)
+        self.assertIn('incertain',result['response']['outputSpeech']['ssml'])
+        self.assertNotIn('Rien n’est confirmé',result['response']['outputSpeech']['ssml'])
+        self.assertEqual(result['sessionAttributes']['pending_job'],'job-test')
+        self.assertNotIn('confirmation_job',result['sessionAttributes'])
     def test_stop_closes_session(self):
         result=skill.lambda_handler(envelope('IntentRequest','AMAZON.StopIntent'),None)
         self.assertTrue(result['response']['shouldEndSession'])
@@ -66,6 +73,23 @@ class BridgeSecurityTests(unittest.TestCase):
     def test_session_is_private_to_owner(self):
         result=self.await_result(self.engine.ask('owner','req','Question',None))
         with self.assertRaises(PermissionError):self.engine.ask('other','req-other','Follow-up',result['session_id'])
+    def test_session_owner_cannot_be_overwritten(self):
+        result=self.await_result(self.engine.ask('owner','req','Question',None))
+        self.engine.ask('other','other-req','Question',None)
+        self.engine.close()
+        self.assertEqual(self.engine.sessions[result['session_id']],'owner')
+    def test_model_generated_session_id_is_ignored(self):
+        import subprocess
+        completed=subprocess.CompletedProcess([],0,'{"speech":"Test","action":null,"session_id":"latest"}','')
+        with patch.object(server.subprocess,'run',return_value=completed):
+            result=self.engine.hermes('Question',None)
+        self.assertNotIn('session_id',result)
+    def test_explicit_cli_session_id_is_accepted(self):
+        import subprocess
+        completed=subprocess.CompletedProcess([],0,'{"speech":"Test","action":null,"session_id":"latest"}','session_id: 20261012_182039_5ec713\n')
+        with patch.object(server.subprocess,'run',return_value=completed):
+            result=self.engine.hermes('Question',None)
+        self.assertEqual(result['session_id'],'20261012_182039_5ec713')
     def test_oversized_query_rejected(self):
         with self.assertRaises(ValueError):self.engine.ask('owner','req','x'*1201,None)
     def test_unapproved_action_never_executes(self):

@@ -64,6 +64,9 @@ class Engine:
                 job.update(status='done',speech=result['speech'][:2000])
                 sid=result.get('session_id')
                 if sid and re.fullmatch(r'[A-Za-z0-9_.:-]{1,120}',sid):
+                    if self.sessions.get(sid,job['owner'])!=job['owner']:
+                        job.update(status='failed',speech='Le contexte de conversation est indisponible. Aucune action n’a été lancée.')
+                        return
                     self.sessions[sid]=job['owner'];job['session_id']=sid
                 action=result.get('action')
                 if action:
@@ -136,7 +139,10 @@ class Engine:
         if text.startswith('```'):
             text=re.sub(r'^```(?:json)?\s*|\s*```$','',text)
         data=json.loads(text)
-        match=re.search(r'session_id:\s*([A-Za-z0-9_.:-]+)',proc.stderr)
+        if not isinstance(data,dict):raise ValueError('Invalid agent JSON')
+        # Model output must never choose a session, especially aliases such as latest.
+        data.pop('session_id',None)
+        match=re.search(r'^session_id:\s*(\d{8}_\d{6}_[0-9a-f]{6})\s*$',proc.stderr,re.MULTILINE)
         if match:data['session_id']=match[1]
         return data
 
